@@ -3,7 +3,7 @@ using ProyectoBE.Models.YourNamespace.Models;
 
 namespace ProyectoBE.Repository
 {
-    public class ReposirotyRevisionPropuesta
+    public class ReposirotyRevisionPropuesta : IReposirotyRevisionPropuesta
     {
         private readonly ApplicationDbContext _context;
         public ReposirotyRevisionPropuesta(ApplicationDbContext context)
