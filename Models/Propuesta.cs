@@ -1,11 +1,13 @@
-﻿namespace ProyectoBE.Models
+﻿using ProyectoBE.Models.Enums;
+
+namespace ProyectoBE.Models
 {
     public class Propuesta
     {
         public int Id { get; set; }
         public string Titulo { get; set; } = null!;
         public string Descripcion { get; set; } = null!;
-        public string Estado { get; set; } = "Pendiente"; // Valores posibles: Pendiente, Aprobada, Rechazada
+        public EstadoPropuesta Estado { get; set; } = EstadoPropuesta.Pendiente;
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
 
         // Relación: Una propuesta pertenece a un alumno
