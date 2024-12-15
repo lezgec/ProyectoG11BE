@@ -8,6 +8,8 @@
         public string Correo { get; set; } = null!;
         public string? Telefono { get; set; }
         public string? PropuestaDefinicion { get; set; }
+        public bool IsDeleted { get; set; } // Flag para eliminación lógica
+        public DateTime? DeletedAt { get; set; } // Fecha de eliminación (opcional)
 
         // Relación: Un alumno tiene muchas propuestas
         public ICollection<Propuesta> Propuestas { get; set; } = new List<Propuesta>();

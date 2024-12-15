@@ -9,6 +9,8 @@ namespace ProyectoBE.Models
         public string Descripcion { get; set; } = null!;
         public EstadoPropuesta Estado { get; set; } = EstadoPropuesta.Pendiente;
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
+        public bool IsDeleted { get; set; } // Flag para eliminación lógica
+        public DateTime? DeletedAt { get; set; } // Fecha de eliminación (opcional)
 
         // Relación: Una propuesta pertenece a un alumno
         public int IdAlumno { get; set; }

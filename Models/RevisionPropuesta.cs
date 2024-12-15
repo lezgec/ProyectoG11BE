@@ -8,6 +8,8 @@ namespace ProyectoBE.Models
         public string? Comentarios { get; set; }
         public EstadoRevision Estado { get; set; } = EstadoRevision.Pendiente;
         public DateTime FechaRevision { get; set; } = DateTime.Now;
+        public bool IsDeleted { get; set; } // Flag para eliminación lógica
+        public DateTime? DeletedAt { get; set; } // Fecha de eliminación (opcional)
 
         // Relación con Propuesta
         public int IdPropuesta { get; set; }
