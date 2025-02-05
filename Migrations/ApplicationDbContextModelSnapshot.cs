@@ -22,7 +22,7 @@ namespace ProyectoBE.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ProyectoBE.Models.Alumno", b =>
+            modelBuilder.Entity("Alumno", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,6 +31,10 @@ namespace ProyectoBE.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Apellido")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cedula")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -46,9 +50,6 @@ namespace ProyectoBE.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PropuestaDefinicion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
@@ -105,6 +106,10 @@ namespace ProyectoBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Correo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -116,6 +121,13 @@ namespace ProyectoBE.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.PrimitiveCollection<string>("PropuestasIds")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Rol")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -135,35 +147,47 @@ namespace ProyectoBE.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AlumnoId")
+                    b.Property<int?>("Alumno1Id")
                         .HasColumnType("int");
+
+                    b.Property<int?>("Alumno2Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Archivo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Definicion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Descripcion")
+                    b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Estado")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("FechaCreacion")
+                    b.Property<DateTime?>("FechaModificacion")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdAlumno")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("FechaSubida")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Observaciones")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("RevisorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AlumnoId");
 
                     b.ToTable("Propuestas");
                 });
@@ -273,27 +297,16 @@ namespace ProyectoBE.Migrations
                     b.ToTable("Secretaria");
                 });
 
-            modelBuilder.Entity("ProyectoBE.Models.Propuesta", b =>
-                {
-                    b.HasOne("ProyectoBE.Models.Alumno", "Alumno")
-                        .WithMany("Propuestas")
-                        .HasForeignKey("AlumnoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Alumno");
-                });
-
             modelBuilder.Entity("ProyectoBE.Models.PropuestaGestor", b =>
                 {
                     b.HasOne("ProyectoBE.Models.Gestor", "Gestor")
-                        .WithMany("PropuestaGestores")
+                        .WithMany()
                         .HasForeignKey("GestorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ProyectoBE.Models.Propuesta", "Propuesta")
-                        .WithMany("PropuestaGestores")
+                        .WithMany()
                         .HasForeignKey("PropuestaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -312,7 +325,7 @@ namespace ProyectoBE.Migrations
                         .IsRequired();
 
                     b.HasOne("ProyectoBE.Models.Propuesta", "Propuesta")
-                        .WithMany("Revisiones")
+                        .WithMany()
                         .HasForeignKey("PropuestaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -322,25 +335,8 @@ namespace ProyectoBE.Migrations
                     b.Navigation("Propuesta");
                 });
 
-            modelBuilder.Entity("ProyectoBE.Models.Alumno", b =>
-                {
-                    b.Navigation("Propuestas");
-                });
-
             modelBuilder.Entity("ProyectoBE.Models.Coordinador", b =>
                 {
-                    b.Navigation("Revisiones");
-                });
-
-            modelBuilder.Entity("ProyectoBE.Models.Gestor", b =>
-                {
-                    b.Navigation("PropuestaGestores");
-                });
-
-            modelBuilder.Entity("ProyectoBE.Models.Propuesta", b =>
-                {
-                    b.Navigation("PropuestaGestores");
-
                     b.Navigation("Revisiones");
                 });
 #pragma warning restore 612, 618

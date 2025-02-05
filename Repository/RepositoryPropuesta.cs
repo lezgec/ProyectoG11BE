@@ -1,32 +1,56 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProyectoBE.Controllers;
 using ProyectoBE.Models;
 using ProyectoBE.Models.YourNamespace.Models;
+
 
 namespace ProyectoBE.Repository
 {
     public class RepositoryPropuesta : IRepositoryPropuesta
     {
         private readonly ApplicationDbContext _context;
+
         public RepositoryPropuesta(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<Propuesta> ConsultarPorId(int id)
-        {
-            return await _context.Propuestas.Where(a => a.Id == id && !a.IsDeleted).FirstOrDefaultAsync();
-        }
-
-        public async Task<List<Propuesta>> ConsultarTodos()
-        {
-            return await _context.Propuestas.Where(a => !a.IsDeleted).ToListAsync();
-        }
-
-        public async Task<int> crear(Propuesta propuesta)
+        public async Task<int> Crear(Propuesta propuesta)
         {
             _context.Propuestas.Add(propuesta);
             await _context.SaveChangesAsync();
             return propuesta.Id;
+        }
+
+        public async Task<List<Propuesta>> ConsultarTodas()
+        {
+            return await _context.Propuestas
+                .Where(p => !p.IsDeleted)
+                .ToListAsync();
+        }
+
+        public async Task<Propuesta?> ConsultarPorId(int id)
+        {
+            return await _context.Propuestas
+                .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+        }
+
+        public async Task Update(Propuesta propuesta)
+        {
+            var propuestaActualizar = await _context.Propuestas.FindAsync(propuesta.Id);
+            if (propuestaActualizar != null)
+            {
+                propuestaActualizar.Titulo = propuesta.Titulo;
+                propuestaActualizar.Definicion = propuesta.Definicion;
+                propuestaActualizar.Estado = propuesta.Estado;
+                propuestaActualizar.Observaciones = propuesta.Observaciones;
+                propuestaActualizar.FechaModificacion = DateTime.Now;
+                propuestaActualizar.Alumno1Id = propuesta.Alumno1Id;
+                propuestaActualizar.Alumno2Id = propuesta.Alumno2Id;
+                propuestaActualizar.RevisorId = propuesta.RevisorId;
+
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<int> Delete(int id)
@@ -41,15 +65,9 @@ namespace ProyectoBE.Repository
             return await _context.SaveChangesAsync();
         }
 
-        public async Task Update(Propuesta propuesta)
+        public Task Crear(RevisorDePropuestasController revisor)
         {
-            Propuesta propuestaActualizar = await _context.Propuestas.FindAsync(propuesta.Id);
-            propuestaActualizar.Titulo = propuesta.Titulo;
-            propuestaActualizar.Descripcion = propuesta.Descripcion;
-            propuestaActualizar.Estado = propuesta.Estado;
-            propuestaActualizar.FechaCreacion = propuesta.FechaCreacion;
-            propuestaActualizar.IdAlumno = propuesta.IdAlumno;
-            await _context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
     }
 }

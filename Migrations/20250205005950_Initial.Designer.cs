@@ -12,8 +12,8 @@ using ProyectoBE.Models.YourNamespace.Models;
 namespace ProyectoBE.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241212025807_enumAdded")]
-    partial class enumAdded
+    [Migration("20250205005950_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace ProyectoBE.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ProyectoBE.Models.Alumno", b =>
+            modelBuilder.Entity("Alumno", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -37,15 +37,22 @@ namespace ProyectoBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Cedula")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Correo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PropuestaDefinicion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
@@ -71,6 +78,12 @@ namespace ProyectoBE.Migrations
                     b.Property<string>("Correo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -100,6 +113,12 @@ namespace ProyectoBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -123,6 +142,9 @@ namespace ProyectoBE.Migrations
                     b.Property<int>("AlumnoId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -135,6 +157,9 @@ namespace ProyectoBE.Migrations
 
                     b.Property<int>("IdAlumno")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Titulo")
                         .IsRequired()
@@ -155,6 +180,9 @@ namespace ProyectoBE.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("GestorId")
                         .HasColumnType("int");
 
@@ -163,6 +191,9 @@ namespace ProyectoBE.Migrations
 
                     b.Property<int>("IdPropuesta")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PropuestaId")
                         .HasColumnType("int");
@@ -190,6 +221,9 @@ namespace ProyectoBE.Migrations
                     b.Property<int>("CoordinadorId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("Estado")
                         .HasColumnType("int");
 
@@ -201,6 +235,9 @@ namespace ProyectoBE.Migrations
 
                     b.Property<int>("IdPropuesta")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PropuestaId")
                         .HasColumnType("int");
@@ -214,10 +251,36 @@ namespace ProyectoBE.Migrations
                     b.ToTable("RevisionesPropuesta");
                 });
 
+            modelBuilder.Entity("ProyectoBE.Models.Secretaria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaCarga")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NombreArchivo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Secretaria");
+                });
+
             modelBuilder.Entity("ProyectoBE.Models.Propuesta", b =>
                 {
-                    b.HasOne("ProyectoBE.Models.Alumno", "Alumno")
-                        .WithMany("Propuestas")
+                    b.HasOne("Alumno", "Alumno")
+                        .WithMany()
                         .HasForeignKey("AlumnoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -261,11 +324,6 @@ namespace ProyectoBE.Migrations
                     b.Navigation("Coordinador");
 
                     b.Navigation("Propuesta");
-                });
-
-            modelBuilder.Entity("ProyectoBE.Models.Alumno", b =>
-                {
-                    b.Navigation("Propuestas");
                 });
 
             modelBuilder.Entity("ProyectoBE.Models.Coordinador", b =>

@@ -12,6 +12,8 @@ namespace ProyectoBE.Controllers
     {
         private readonly IRepositoryCoordinador _repositoryCoordinador;
 
+        public int Id { get; private set; }
+
         public CoordinadorDeRevisionController(IRepositoryCoordinador repositoryCoordinador)
         {
             _repositoryCoordinador = repositoryCoordinador;
@@ -45,20 +47,21 @@ namespace ProyectoBE.Controllers
 
         // Crear un nuevo coordinador de revisión
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CoordinadorDeRevision coordinador)
+        public async Task<IActionResult> Post([FromBody] Coordinador coordinador)
         {
-            var nuevoCoordinador = await _repositoryCoordinador.Crear(coordinador);
+            var nuevoCoordinadorId = await _repositoryCoordinador.crear(coordinador);
+            var nuevoCoordinador = await _repositoryCoordinador.ConsultarPorId(nuevoCoordinadorId);
             return CreatedAtAction(nameof(GetById), new { id = nuevoCoordinador.Id }, nuevoCoordinador);
         }
 
         // Actualizar un coordinador de revisión
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] CoordinadorDeRevision coordinador)
+        public async Task<IActionResult> Put(int id, [FromBody] Coordinador coordinador)
         {
             if (id != coordinador.Id)
                 return BadRequest(new { message = "El ID no coincide." });
 
-            await _repositoryCoordinador.Actualizar(coordinador);
+            await _repositoryCoordinador.Update(coordinador);
             return Ok(new { message = "Coordinador actualizado con éxito.", coordinador });
         }
 
@@ -66,7 +69,7 @@ namespace ProyectoBE.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _repositoryCoordinador.Eliminar(id);
+            await _repositoryCoordinador.Delete(id);
             return Ok(new { message = $"Coordinador con ID {id} eliminado correctamente." });
         }
     }

@@ -44,8 +44,8 @@ namespace ProyectoBE.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Secretaria secretaria)
         {
-            var nuevaSecretaria = await _repositorySecretaria.Crear(secretaria);
-            return CreatedAtAction(nameof(GetById), new { id = nuevaSecretaria.Id }, nuevaSecretaria);
+            var nuevaSecretaria = await _repositorySecretaria.crear(secretaria);
+            return CreatedAtAction(nameof(GetById), new { id = nuevaSecretaria }, nuevaSecretaria);
         }
 
         [HttpPut("{id}")]
@@ -54,14 +54,14 @@ namespace ProyectoBE.Controllers
             if (id != secretaria.Id)
                 return BadRequest(new { message = "El ID no coincide." });
 
-            await _repositorySecretaria.Actualizar(secretaria);
+            await _repositorySecretaria.Update(secretaria);
             return Ok(new { message = "Secretaria actualizada con éxito.", secretaria });
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _repositorySecretaria.Eliminar(id);
+            await _repositorySecretaria.Delete(id);
             return Ok(new { message = $"Secretaria con ID {id} eliminada correctamente." });
         }
     }

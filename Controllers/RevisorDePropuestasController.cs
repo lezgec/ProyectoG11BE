@@ -22,7 +22,7 @@ namespace ProyectoBE.Controllers
         {
             try
             {
-                var revisores = await _repositoryRevisor.ConsultarTodos();
+                var revisores = await _repositoryRevisor.ConsultarTodas();
                 return Ok(revisores);
             }
             catch (Exception ex)
@@ -42,16 +42,16 @@ namespace ProyectoBE.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Revisor revisor)
+        public async Task<IActionResult> Post([FromBody] RevisorDePropuestasController revisor)
         {
-            var nuevoRevisor = await _repositoryRevisor.Crear(revisor);
-            return CreatedAtAction(nameof(GetById), new { id = nuevoRevisor.Id }, nuevoRevisor);
+            await _repositoryRevisor.Crear(revisor);
+            return Ok(new { message = "Revisor creado correctamente." });
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _repositoryRevisor.Eliminar(id);
+            await _repositoryRevisor.Delete(id);
             return Ok(new { message = $"Revisor con ID {id} eliminado correctamente." });
         }
     }

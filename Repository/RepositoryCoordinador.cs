@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProyectoBE.Controllers;
 using ProyectoBE.Models;
 using ProyectoBE.Models.YourNamespace.Models;
 
@@ -31,6 +32,11 @@ namespace ProyectoBE.Repository
                 return coordinador.Id;
             }
 
+        public Task crear(CoordinadorDeRevisionController coordinador)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<int> Delete(int id)
         {
             var coordinadorEliminar = await _context.Coordinadores.FindAsync(id);
@@ -52,6 +58,11 @@ namespace ProyectoBE.Repository
             coordinadorActualizar.Telefono = coordinador.Telefono;
 
             await _context.SaveChangesAsync();
+        }
+
+        public Task Update(CoordinadorDeRevisionController coordinador)
+        {
+            throw new NotImplementedException();
         }
     }
 }

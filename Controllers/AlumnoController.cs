@@ -61,7 +61,7 @@ namespace ProyectoBE.Controllers
                     return BadRequest(new { message = "Los datos del alumno son inválidos." });
 
                 var nuevoAlumno = await _repositoryAlumno.Crear(alumno);
-                return CreatedAtAction(nameof(GetById), new { id = nuevoAlumno.Id }, nuevoAlumno);
+                return CreatedAtAction(nameof(GetById), new { id = nuevoAlumno }, nuevoAlumno);
             }
             catch (Exception ex)
             {
